@@ -1,0 +1,30 @@
+---
+ - hosts: dbservers
+   name: creating mysql DB
+   become: true
+   gather_facts: false
+   tasks:
+           - name: install wget
+             apt: name=wget state=latest
+            
+           - name: install python-mysql
+             apt: name=python state=latest
+       
+           - name: install mysql server
+             apt: name=mysql-server state=latest
+           
+             # - apt: name=pip2 state=latest
+
+           - name: install MySQL-python
+             apt: name=python-mysqldb state=latest
+
+           - name: crate demo db - harrydb
+             mysql_db: name=harrydb state=present
+   
+           - name: create demo db user
+             mysql_user: name=harry password=1234 state=present
+
+           - name: restart mysqld
+             service: name=mysql state=restarted
+            
+            
