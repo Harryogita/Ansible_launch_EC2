@@ -1,0 +1,25 @@
+---
+ - hosts: localhost
+   name: launch ec2 - playbook
+   become: true
+   connection: local
+   gather_facts: false
+   vars_files: aws_key.yml
+   tasks: 
+
+        - name: update machine
+          apt: name=* state=latest
+        
+        - name: install boto and boto3
+          apt: name=python3-boto state=latest
+        
+        - apt: name=python3-boto3 state=latest
+
+        - name: task to launch ec2 aws ubuntu machine
+          ec2:
+             instance_type: t2.micro
+             image: ami-03b8a287edc0c1253
+             region: ap-south-1
+             aws_access_key: "{{my_aws_access_key}}"
+             aws_secret_key: "{{my_aws_secret_key}}" 
+
