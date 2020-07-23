@@ -19,6 +19,6 @@
              instance_type: t2.micro
              image: ami-03b8a287edc0c1253
              region: ap-south-1
-             aws_access_key: AKIAJV35UCUEWVE4I22A
-             aws_secret_key: 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
+             aws_access_key: xxxxxxxxxxxxxxxxxx
+             aws_secret_key: yyyyyyyyyyyyyyyyyy
 
