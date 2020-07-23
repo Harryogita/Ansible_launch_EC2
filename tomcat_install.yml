@@ -1,0 +1,41 @@
+---
+ - hosts: dbservers
+   name: playbook for installing tomcat , set port , user using template module of ansible
+   become: true
+   gather_facts: false
+   tasks:
+       - name: update local repo
+         apt: name='*' state=present
+
+       - name: Install required java
+         apt: name=openjdk-8-jdk state=latest
+
+       - name: Set default java if multiple installed
+         alternatives:
+                 name: java
+                 link: /usr/bin/java
+                 path: /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+
+       - name: install required tomcat
+         get_url: 
+                 url: https://downloads.apache.org/tomcat/tomcat-8/v8.5.57/bin/apache-tomcat-8.5.57.tar.gz
+                 dest: /usr/local
+
+       - name: Extract tomcat 
+         unarchive:
+                 src: /usr/local/apache-tomcat-8.5.57.tar.gz
+                 dest: /usr/local
+                 remote_src: yes
+
+
+       - name: rename tomcat home
+         command: mv /usr/local/apache-tomcat-8.5.57 /usr/local/tomcat_webserver
+         ignore_errors: true
+
+
+       - name: change default port 8080 to 8082
+         command: sed -i 's/8080/8081/g' /usr/local/tomcat_webserver/conf/server.xml
+
+       - name: start tomcat service 
+         command: /usr/local/tomcat_webserver/bin/startup.sh
+         #remote_src: yes
